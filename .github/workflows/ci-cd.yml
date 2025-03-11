@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
 
       - name: Compile Code
         run: mvn -f myapp/pom.xml clean compile
-        
+
       #Skip tests for now
       - name: Package Application
         run: mvn -f myapp/pom.xml package -DskipTests
