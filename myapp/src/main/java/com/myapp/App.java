@@ -1,5 +1,7 @@
 package com.myapp;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Hello world!
  *
