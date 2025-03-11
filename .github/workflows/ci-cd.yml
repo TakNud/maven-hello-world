@@ -19,7 +19,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'maven'
-          
+
       - name: Compile Code
         run: mvn -f myapp/pom.xml clean compile
 
@@ -38,7 +38,6 @@ jobs:
           mvn -f myapp/pom.xml versions:set -DnewVersion=$NEW_VERSION -DgenerateBackupPoms=false
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
-      #Skip tests for now
       - name: Package Application
         run: mvn -f myapp/pom.xml package -DskipTests
 
