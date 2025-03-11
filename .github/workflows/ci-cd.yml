@@ -19,6 +19,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           cache: 'maven'
+          
+      - name: Compile Code
+        run: mvn -f myapp/pom.xml clean compile
+
+      - name: Run Tests
+        run: |
+          mvn -f myapp/pom.xml test && echo "✅ Tests succeeded!" || (echo "❌ Tests failed!" && exit 1)
 
       - name: Extract Current Version
         id: get_version
@@ -30,9 +37,6 @@ jobs:
           NEW_VERSION=$(echo $VERSION | awk -F. '{print $1"."$2"."$3+1}')
           mvn -f myapp/pom.xml versions:set -DnewVersion=$NEW_VERSION -DgenerateBackupPoms=false
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-
-      - name: Compile Code
-        run: mvn -f myapp/pom.xml clean compile
 
       #Skip tests for now
       - name: Package Application
