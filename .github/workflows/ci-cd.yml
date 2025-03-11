@@ -29,9 +29,9 @@ jobs:
 
       - name: Increase Patch Version
         run: |
-          # Automatically increment the patch version using the Maven Versions Plugin
-          mvn -f myapp/pom.xml versions:increment -Dstrategy=incremental
-          NEW_VERSION=$(mvn -f myapp/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
+          CURRENT_VERSION=$(mvn -f myapp/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
+          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. -v OFS=. '{$NF++;print}')
+          mvn -f myapp/pom.xml versions:set -DnewVersion=$NEW_VERSION
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Package Application
