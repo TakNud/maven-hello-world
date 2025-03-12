@@ -66,3 +66,11 @@ jobs:
 
       - name: Push Docker Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/myapp:${{ env.NEW_VERSION }}
+
+      - name: Run the container
+        run: |
+          docker run -d --name myapp-container -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/myapp:${{ env.NEW_VERSION }}
+      - name: Check container logs
+        run: |
+          sleep 5  # Wait a few seconds to allow the app to start
+          docker logs myapp-container
