@@ -1,0 +1,10 @@
+replicaCount: 1
+
+image:
+  repository: almogso/myapp
+  tag: "1.0.1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080

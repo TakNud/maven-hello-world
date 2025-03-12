@@ -27,13 +27,19 @@ jobs:
         run: |
           mvn -f myapp/pom.xml test && echo "✅ Tests succeeded!" || (echo "❌ Tests failed!" && exit 1)
 
-      - name: Increase Patch Version
+      - name: Increase Patch Version - POM.XML file
         run: |
           CURRENT_VERSION=$(mvn -f myapp/pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)
           NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. -v OFS=. '{$NF++;print}')
           mvn -f myapp/pom.xml versions:set -DnewVersion=$NEW_VERSION
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-          
+
+      - name: Update Helm values.yaml with new image tag
+        run: |
+          sed -i 's/tag: ".*"/tag: "'"$NEW_VERSION"'"/' helm/myapp/values.yaml
+
+      - name: Commit updated - values and pom files
+        run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add myapp/pom.xml
